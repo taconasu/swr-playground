@@ -32,41 +32,36 @@ export const Pagination: React.FC<Props> = ({
   onPaginate,
   className,
 }) => (
-  <nav aria-label="Page navigation example" className={className}>
+  <nav className={className}>
     <ul className="inline-flex -space-x-px text-base h-10">
-      {currentPage > 1 && (
-        <li>
-          <Link
-            href={`/step2?page=${currentPage - 1}`}
-            className={prev()}
-            onClick={() => onPaginate(currentPage - 1)}
-          >
-            Prev
-          </Link>
-        </li>
-      )}
+      <li>
+        <button
+          className={prev()}
+          onClick={() => onPaginate(currentPage - 1)}
+          disabled={currentPage <= 1}
+        >
+          Prev
+        </button>
+      </li>
       {[...Array(totalPage)].map((_, i) => (
         <li key={`pagenation-${i}`}>
-          <Link
-            href={`/step2?page=${i + 1}`}
+          <button
             className={page({ current: i + 1 === currentPage })}
             onClick={() => onPaginate(i + 1)}
           >
             {i + 1}
-          </Link>
+          </button>
         </li>
       ))}
-      {currentPage < totalPage && (
-        <li>
-          <Link
-            href={`/step2?page=${currentPage + 1}`}
-            className={next()}
-            onClick={() => onPaginate(currentPage + 1)}
-          >
-            Next
-          </Link>
-        </li>
-      )}
+      <li>
+        <button
+          className={next()}
+          onClick={() => onPaginate(currentPage + 1)}
+          disabled={currentPage >= totalPage}
+        >
+          Next
+        </button>
+      </li>
     </ul>
   </nav>
 );

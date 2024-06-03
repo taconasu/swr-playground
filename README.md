@@ -17,7 +17,7 @@ pnpm i
 
 ## Step.1 useSWR
 
-オーソドックスな[useSWR API](https://swr.vercel.app/ja/docs/api)の利用方法を試す
+オーソドックスな[useSWR API](https://swr.vercel.app/ja/docs/api)を試す
 
 ### Files
 
@@ -34,3 +34,25 @@ pnpm i
     - 再試行（retry）と再検証（revalidate）は別物なので`errorRetryCount`を 0 にしても revalidate は有効にしていれば実行される
   - 再試行の間隔を調整したい場合は`errorRetryInterval`で任意のミリ秒を指定する
 - 再検証時にエラーが発生した場合は直前で取得成功している data は残る（エラー発生によって data が undefined になったりはしない）
+
+## Step.2 useSWRInfinite
+
+ページネーションや無限ローディングのための[useSWRInfinite API](https://swr.vercel.app/ja/docs/pagination#useswrinfinite)を試す
+
+### Files
+
+- `src/api/step2/route.ts`
+- `src/playgrounds/step2/index.ts`
+- `src/app/step2/page.tsx`
+
+### 📝 Memo
+
+- `useSWRInfinite`の第一引数には fetcher の前処理となる getKey 関数を指定する
+  - getKey の返り値は SWR のキー情報となるだけでなく、fetcher の引数となる
+  - ページ番号などを fetcher に渡すために利用することもできる
+- デフォルトでは再検証時に毎回最初のページを revalidate してしまう
+  - 無効にしたい場合は options の`revalidateFirstPage`を false にする
+- 特定のページのみ再検証させたい場合は mutate の`revalidate` options を使う
+  - revalidate 対象のページの場合のみ true を返却するような関数を指定する
+  - 👆 の関数はページごとに再帰的に検証する（関数の引数として当該ページのデータを参照できる）
+- `mutate()`は取得済みの全ページを再検証する
