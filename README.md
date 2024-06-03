@@ -19,16 +19,18 @@ pnpm i
 
 オーソドックスな[useSWR API](https://swr.vercel.app/ja/docs/api)の利用方法を試す
 
-### Sample API
+### Files
 
-`src/api/step1/route.ts`にて２秒後に現在日時付きのデータを返却する GET API を用意
+- `src/api/step1/route.ts`
+- `src/playgrounds/step1/index.ts`
+- `src/app/step1/page.tsx`
 
-### Sample SWR hooks
+### 📝 Memo
 
-`src/playgrounds/step1/index.ts`にて基本的な useSWR の実装を用意  
-`useStap1`として hooks を export し、利用する画面でデータやローディングの状態、再検証のためのハンドラを受け取れるように実装
-
-### Sample Page
-
-`src/app/step1/page.tsx`にて、オプションを利用しないベーシックな SWR の利用ケースと`useSWRImmutable`と同等のオプションを指定したケースの 2 パターンを用意  
-それぞれの場合の再検証の挙動を確認可能
+- immutable なオプションを適用した場合、初回の fetch 時や mutate 実行時の挙動は通常の useSWR と変わらない
+- fetcher で error が発生した場合、data が存在しないため再検証時および mutate 実行時は`isLoading`も true になる
+- fetcher で error 発生時、useSWR はデフォルトで API の再試行を試みる
+  - 再試行をさせたくない場合は useSWR のオプションで`errorRetryCount: 0`を指定する
+    - 再試行（retry）と再検証（revalidate）は別物なので`errorRetryCount`を 0 にしても revalidate は有効にしていれば実行される
+  - 再試行の間隔を調整したい場合は`errorRetryInterval`で任意のミリ秒を指定する
+- 再検証時にエラーが発生した場合は直前で取得成功している data は残る（エラー発生によって data が undefined になったりはしない）
