@@ -10,7 +10,7 @@ export async function GET(request: Request) {
 
   // status が "error" の場合はエラーレスポンスを返却する
   if (status === "error") {
-    return Response.error();
+    return new Response(undefined, { status: 500 });
   }
 
   return Response.json({

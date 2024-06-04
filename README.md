@@ -67,3 +67,19 @@ pnpm i
   - 特定のページの fetch をスキップする用途では利用できない
 - `parallel`オプションで並列リクエストが可能
   - ページネーションで一気に数百ページ先を読み込む時などは危険そう
+
+## Step.3 SWR Error Provider
+
+エラー発生時に備えた fallback コンポーネントの表示を試す
+
+今回は SWRConfig の`onError`ハンドラを用いてエラーが発生している場合は Provider 配下のコンポーネントを表示せずに、fallback コンポーネントを表示させる実装を試す
+
+### Files
+
+※useSWR や hooks についてはエラーレスポンスを試行できさえすればよいので Step.1 のものを流用する
+
+- `src/app/step3/page.tsx`
+- `src/components/step3/ChildComponent.tsx`
+  - fallback によって表示されなくなるコンポーネント
+- `src/components/SWRErrorProvider.tsx`
+  - ページ全体をラップして、配下のコンポーネントで SWR の API リクエストでエラーが発生した場合に fallback を表示する
