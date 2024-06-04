@@ -17,7 +17,10 @@ export default function Page() {
     clear,
     revalidate,
     revalidateLastPage,
-  } = useStep2({ revalidateFirstPage: false });
+  } = useStep2({
+    revalidateFirstPage: false,
+    parallel: true,
+  });
 
   return (
     <div className="flex flex-col gap-4">

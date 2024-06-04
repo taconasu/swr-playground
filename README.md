@@ -27,6 +27,8 @@ pnpm i
 
 ### 📝 Memo
 
+- Option の型は`SWRConfiguration`
+  - `swr`から import
 - immutable なオプションを適用した場合、初回の fetch 時や mutate 実行時の挙動は通常の useSWR と変わらない
 - fetcher で error が発生した場合、data が存在しないため再検証時および mutate 実行時は`isLoading`も true になる
 - fetcher で error 発生時、useSWR はデフォルトで API の再試行を試みる
@@ -47,6 +49,8 @@ pnpm i
 
 ### 📝 Memo
 
+- Option の型は`SWRInfiniteConfiguration`
+  - `swr/infinite`から import
 - `useSWRInfinite`の第一引数には fetcher の前処理となる getKey 関数を指定する
   - getKey の返り値は SWR のキー情報となるだけでなく、fetcher の引数となる
   - ページ番号などを fetcher に渡すために利用することもできる
@@ -56,3 +60,10 @@ pnpm i
   - revalidate 対象のページの場合のみ true を返却するような関数を指定する
   - 👆 の関数はページごとに再帰的に検証する（関数の引数として当該ページのデータを参照できる）
 - `mutate()`は取得済みの全ページを再検証する
+- useSWRInfinite で自動再検証を無効にしたい場合は、useSWRImmutable と同等にするための以下のオプションを true にする
+  - `revalidateIfStale` / `revalidateOnFocus` / `revalidateOnReconnect`
+  - [自動再検証の無効化](https://swr.vercel.app/ja/docs/revalidation#disable-automatic-revalidations)
+- getKey 関数で null を返却した場合、当該 index の処理をスキップするわけではなく、data が存在しない状態になる
+  - 特定のページの fetch をスキップする用途では利用できない
+- `parallel`オプションで並列リクエストが可能
+  - ページネーションで一気に数百ページ先を読み込む時などは危険そう
