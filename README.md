@@ -83,3 +83,9 @@ pnpm i
   - fallback によって表示されなくなるコンポーネント
 - `src/components/SWRErrorProvider.tsx`
   - ページ全体をラップして、配下のコンポーネントで SWR の API リクエストでエラーが発生した場合に fallback を表示する
+
+### 📝 Memo
+
+- `SWRConfig`の onError を使うことで fetcher のエラー発生時にハンドリングが可能
+  - onError は useSWR の [options](https://swr.vercel.app/ja/docs/api#options) でも利用可能（スコープの制御が可能）
+- 再試行などをさせる場合、`onSuccess`を利用するとより柔軟なハンドリングができる
